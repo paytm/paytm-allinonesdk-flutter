@@ -21,4 +21,4 @@ Run ios and android app
 
 
 
-* Developer Docs: https://developer.paytm.com/docs/all-in-one-sdk/hybrid-apps/flutter/?ref=allInOneMerchantIntegration
+* Developer Docs: https://developer.paytm.com/docs/all-in-one-sdk/hybrid-apps/flutter/
