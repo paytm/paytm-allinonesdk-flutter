@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class EditText extends StatefulWidget {
   final String text, value;
-  final Function onChange;
+  final Function? onChange;
   EditText(this.text, this.value, {this.onChange});
   @override
   State<StatefulWidget> createState() {
@@ -27,7 +27,7 @@ class _EditTextState extends State<EditText> {
           margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
           child: TextField(
             controller: TextEditingController(text: widget.value),
-            onChanged: widget.onChange,
+            onChanged: widget.onChange as void Function(String)?,
             decoration: InputDecoration(
               hintText: 'Enter ${widget.text}',
               fillColor: Colors.white,

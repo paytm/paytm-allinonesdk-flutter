@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:paytm_allinonesdk/paytm_allinonesdk.dart';
-
 import './edit_text.dart';
 
 void main() {
@@ -40,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isApiCallInprogress = false;
   String callbackUrl = "";
   bool restrictAppInvoke = false;
-
+  bool enableAssist = true;
   @override
   void initState() {
     print("initState");
@@ -65,9 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Checkbox(
                       activeColor: Theme.of(context).buttonColor,
                       value: isStaging,
-                      onChanged: (bool val) {
+                      onChanged: (bool? val) {
                         setState(() {
-                          isStaging = val;
+                          isStaging = val!;
                         });
                       }),
                   Text("Staging")
@@ -78,9 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Checkbox(
                       activeColor: Theme.of(context).buttonColor,
                       value: restrictAppInvoke,
-                      onChanged: (bool val) {
+                      onChanged: (bool? val) {
                         setState(() {
-                          restrictAppInvoke = val;
+                          restrictAppInvoke = val!;
                         });
                       }),
                   Text("Restrict AppInvoke")
@@ -88,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Container(
                 margin: EdgeInsets.all(16),
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: isApiCallInprogress
                       ? null
                       : () {
@@ -122,12 +120,13 @@ class _HomeScreenState extends State<HomeScreen> {
       "txnToken": txnToken,
       "callbackUrl": callbackUrl,
       "isStaging": isStaging,
-      "restrictAppInvoke": restrictAppInvoke
+      "restrictAppInvoke": restrictAppInvoke,
+      "enableAssist": enableAssist
     };
     print(sendMap);
     try {
-      var response = AllInOneSdk.startTransaction(
-          mid, orderId, amount, txnToken, null, isStaging, restrictAppInvoke);
+      var response = AllInOneSdk.startTransaction(mid, orderId, amount,
+          txnToken, "", isStaging, restrictAppInvoke, enableAssist);
       response.then((value) {
         print(value);
         setState(() {
@@ -136,7 +135,9 @@ class _HomeScreenState extends State<HomeScreen> {
       }).catchError((onError) {
         if (onError is PlatformException) {
           setState(() {
-            result = onError.message + " \n  " + onError.details.toString();
+            result = onError.message.toString() +
+                " \n  " +
+                onError.details.toString();
           });
         } else {
           setState(() {
@@ -145,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     } catch (err) {
-      result = err.message;
+      result = err.toString();
     }
   }
 }
